@@ -1,3 +1,4 @@
+<p-toast position="top-left"></p-toast>
 <div class="card my-4">
     <h5 class="card-header">Ask Your Question</h5>
     <div class="card-body">
@@ -5,7 +6,6 @@
             <textarea type="text" class="form-control" placeholder="What if..???" [(ngModel)]="question"></textarea>
         </div>
         <div class="input-group">
-
             <ng-multiselect-dropdown [settings]="dropdownSettings" [placeholder]="'Select Tags'" [data]="dropdownList"
                 [(ngModel)]="selectedTags" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
             </ng-multiselect-dropdown>

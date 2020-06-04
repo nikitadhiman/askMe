@@ -1,15 +1,32 @@
 <div class="card mb-4">
     <!--<img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap"> -->
-    <div class="card-body">
-        <h2 class="card-title">Post Title</h2>
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid
-            atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero
-            voluptate voluptatibus possimus, veniam magni quis!</p>
-        <a href="#" class="btn btn-primary">Read More &rarr;</a>
-    </div>
-    <div class="card-footer text-muted">
-        Posted on January 1, 2017 by
-        <a href="#">Start Bootstrap</a>
+    <div *ngFor="let item of feed">
+        <div class="card-body">
+            <p class="card-text">{{item.content}}</p>
+            <div class="row all-tags">
+                <span class="question-tag" *ngFor="let tag of item.tags">{{tag.item_text}}</span>
+            </div>
+            <div class="card-body" *ngFor="let answer of item.answers">
+                <p class="answers-comment-section">{{answer.content}}</p>
+                <div class="card-footer text-muted">
+                    Answered on {{answer.date | date}} by
+                    <a href="#">{{answer.author}}</a>
+                </div>
+            </div>
+            <button class="btn btn-info" (click)="putAnswer(item)">Answer this &rarr;</button>
+        </div>
+        <div class="input-group" *ngIf="item.currentAnswered">
+            <textarea type="text" class="form-control" placeholder="And the answer is..???"
+                [(ngModel)]="answer"></textarea>
+        </div>
+        <div class="input-group" *ngIf="item.currentAnswered">
+            <button class="btn btn-danger" (click)="cancelAnswer(item)">Cancel</button> &nbsp;&nbsp;
+            <button class="btn btn-primary" (click)="submitAnswer(item)">Submit Answer</button>
+        </div>
+        <div class="card-footer text-muted">
+            Posted on {{item.date | date}} by
+            <a href="#">{{item.author}}</a>
+        </div>
     </div>
 </div>
 

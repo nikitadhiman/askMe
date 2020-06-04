@@ -1,15 +1,14 @@
-<p-toast position="top-left"></p-toast>
 <app-header></app-header>
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <h1 class="my-4">Your Feed
-                <small></small>
-            </h1>
             <div class="card mb-4">
                 <app-post (questionContent)="questionAdded($event)"></app-post>
             </div>
-            <app-feed></app-feed>
+            <h1 class="my-4">Your Feed
+                <small></small>
+            </h1>
+            <app-feed [feed]="allQuestions" ></app-feed>
         </div>
         <div class="col-md-4">
             <div class="card my-4">

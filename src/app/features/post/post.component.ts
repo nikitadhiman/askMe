@@ -3,30 +3,31 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MessageService } from 'primeng/api';
 
 interface questionInterface{
-  'id' : number;
-  'content' : string,
-  'date' : Date,
-  'author' : string,
-  'comment'? : any,
-  'tags'? : Array<any>,
-  'addComment'? : boolean
+  'id': number;
+  'content': string;
+  'date': any;
+  'author': string;
+  'comment'?: any;
+  'tags'?: Array<any>;
+  'answers'?: Array<any>;
+  'currentAnswered'?: boolean;
 }
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  providers:[MessageService]
+  providers: [MessageService]
 })
 export class PostComponent implements OnInit {
 
   dropdownList = [];
   selectedTags = [];
-  question : string;
+  question: string;
   dropdownSettings: IDropdownSettings;
   @Output() questionContent = new EventEmitter();
 
-  constructor(private messageService : MessageService){}
+  constructor(private messageService: MessageService){}
   ngOnInit() {
     this.dropdownList = [
       { item_id: 'science', item_text: 'Science' },
@@ -42,7 +43,6 @@ export class PostComponent implements OnInit {
       textField: 'item_text',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
       allowSearchFilter: true
     };
   }
@@ -54,15 +54,22 @@ export class PostComponent implements OnInit {
   }
 
   addQuestion(){
-    let question : questionInterface = {
-      'id' : new Date().getMilliseconds(),
-      'content' : this.question,
-      'date' : new Date(),
-      'addComment' : false,
-      'tags' : this.selectedTags,
-      'author' : localStorage.getItem("currentUser"),
-      'comment' : []
-    }
+
+    const question: questionInterface = {
+      id : new Date().getMilliseconds(),
+      content : this.question,
+      date : new Date().toDateString(),
+      answers : [],
+      tags : this.selectedTags,
+      author : localStorage.getItem('currentUser'),
+      comment : [],
+      currentAnswered : false
+    };
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Question Added',
+      detail: 'Your question has been added Successfully.We are reaching out to experts to get the answer'}
+    );
     this.questionContent.emit(question);
   }
 
