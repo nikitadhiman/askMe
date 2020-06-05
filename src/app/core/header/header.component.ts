@@ -17,7 +17,11 @@ export class HeaderComponent implements OnInit {
 
   appLogout(){
     localStorage.removeItem('currentUser');
-    this.router.navigateByUrl('/askMe/login');
+    this.router.navigateByUrl('/login');
+  }
+
+  navigateTo(url : string){
+    this.router.navigateByUrl(url);
   }
 
 
