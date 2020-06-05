@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Jack Smith",
+        "userName" : "jacksmith",
+        "about" : "Professor ",
+        "hobbies" : "Read, out with friends, listen to music, draw and learn new things.", 
+        "active" : ["Science", "History"],
+        "email" : "jack@someting.com",
+        "password" : "admin"
+    },
+    {
+        "name": "Jane Smith",
+        "userName" : "janesmith",
+        "about" : "Software Engineer",
+        "hobbies" : "Read, out with friends, listen to music, draw and learn new things.", 
+        "active" : ["Science", "Literature"],
+        "email" : "jane@someting.com",
+        "password" : "admin"
+    }
+]
