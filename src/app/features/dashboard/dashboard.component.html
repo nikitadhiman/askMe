@@ -5,16 +5,17 @@
             <div class="card mb-4">
                 <app-post (questionContent)="questionAdded($event)"></app-post>
             </div>
-            <h1 class="my-4">Your Feed
+            <h4 class="my-4">Your Feed
                 <small></small>
-            </h1>
-            <app-feed [feed]="allQuestions" ></app-feed>
+            </h4>
+            <span *ngIf="filteredQuestionsToAnswer.length == 0">All caught up for today!!</span>
+            <app-feed [feed]="filteredQuestionsToAnswer" (notification)="fetchNotifications($event)" ></app-feed>
         </div>
         <div class="col-md-4">
             <div class="card my-4">
-                <app-tags></app-tags>
+                <app-tags (tag)="filterTag($event)"></app-tags>
             </div>
-            <app-activity></app-activity>
+            <app-activity [notifications] = "notifications"></app-activity>
         </div>
     </div>
 </div>

@@ -11,22 +11,55 @@ export class DashboardComponent implements OnInit {
 
   allQuestions = [];
   subComment: string;
-  currentUser: string;
-
+  currentUser: any;
+  questionsToAnswer = [];
+  filteredQuestionsToAnswer = [];
+  notifications = [];
 
   ngOnInit(): void {
-    this.currentUser = localStorage.getItem('currentUser');
-    this.allQuestions = JSON.parse(localStorage.getItem('allQuestions'));
 
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.allQuestions = JSON.parse(localStorage.getItem('allQuestions'));
     if (!this.allQuestions){ this.allQuestions = []; }
+    else{ this.getQuestionToAnswer(this.allQuestions); }
   }
 
   questionAdded(event: any){
-
     this.allQuestions.push(event);
+    this.getQuestionToAnswer(this.allQuestions);
+
     localStorage.setItem('allQuestions', JSON.stringify(this.allQuestions));
   }
 
+  getQuestionToAnswer(question: Array<any>){
+    if (this.allQuestions){
+      this.allQuestions.forEach( quest => {
+        if (quest.author !== this.currentUser.userName){
+          this.questionsToAnswer.push(quest);
+          this.filteredQuestionsToAnswer.push(quest);
+        }
+      });
+    }
+  }
 
+  fetchNotifications(event){
+    this.notifications = event;
+  }
 
+  filterTag(event: any) {
+    this.filteredQuestionsToAnswer = [];
+
+    if (event === '') {
+      this.filteredQuestionsToAnswer = this.questionsToAnswer;
+      return;
+    }
+
+    this.questionsToAnswer.forEach(question => {
+      const q = question.tags.filter(tag => tag.id === event);
+      if (q.length > 0) {
+        this.filteredQuestionsToAnswer.push(question);
+      }
+    });
+
+  }
 }

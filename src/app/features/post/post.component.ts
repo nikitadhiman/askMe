@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MessageService } from 'primeng/api';
 
-interface questionInterface{
+interface QuestionInterface {
   'id': number;
   'content': string;
   'date': any;
@@ -24,51 +24,67 @@ export class PostComponent implements OnInit {
   dropdownList = [];
   selectedTags = [];
   question: string;
+  user: any;
   dropdownSettings: IDropdownSettings;
   @Output() questionContent = new EventEmitter();
 
-  constructor(private messageService: MessageService){}
+  constructor(private messageService: MessageService) { }
   ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.dropdownList = [
-      { item_id: 'science', item_text: 'Science' },
-      { item_id: 'history', item_text: 'History' },
-      { item_id: 'politics', item_text: 'Politics' },
-      { item_id: 'literature', item_text: 'Literature' },
-      { item_id: 'socialLife', item_text: 'Social Life' },
-      { item_id: 'arts', item_text: 'Arts' }
+      { id: 'science', value: 'Science' },
+      { id: 'history', value: 'History' },
+      { id: 'politics', value: 'Politics' },
+      { id: 'literature', value: 'Literature' },
+      { id: 'socialLife', value: 'Social Life' },
+      { id: 'arts', value: 'Arts' }
     ];
-    this.dropdownSettings  = {
+    this.dropdownSettings = {
       singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
+      idField: 'id',
+      textField: 'value',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       allowSearchFilter: true
     };
   }
   onItemSelect(item: any) {
-    this.selectedTags = item;
+    this.selectedTags.push(item);
   }
   onSelectAll(items: any) {
     this.selectedTags = items;
   }
 
-  addQuestion(){
+  onItemDeSelect(item: any) {
+    console.log(item);
+    this.selectedTags = this.selectedTags.filter(tag => {
+      return tag.id !== item.id;
+    });
 
-    const question: questionInterface = {
-      id : new Date().getMilliseconds(),
-      content : this.question,
-      date : new Date().toDateString(),
-      answers : [],
-      tags : this.selectedTags,
-      author : localStorage.getItem('currentUser'),
-      comment : [],
-      currentAnswered : false
+    console.log(this.selectedTags);
+  }
+
+  onDeSelectAll(item: any) {
+    this.selectedTags = [];
+  }
+
+  addQuestion() {
+
+    const question: QuestionInterface = {
+      id: new Date().getMilliseconds(),
+      content: this.question,
+      date: new Date().toDateString(),
+      answers: [],
+      tags: this.selectedTags,
+      author: this.user.userName,
+      comment: [],
+      currentAnswered: false
     };
     this.messageService.add({
       severity: 'success',
       summary: 'Question Added',
-      detail: 'Your question has been added Successfully.We are reaching out to experts to get the answer'}
+      detail: 'Your question has been added Successfully.We are reaching out to experts to get the answer'
+    }
     );
     this.questionContent.emit(question);
   }

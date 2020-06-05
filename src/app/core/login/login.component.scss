@@ -9,7 +9,7 @@
   }
   
   .bg-image {
-    background-image: url('https://source.unsplash.com/WEQbe2jBg40/600x1200');
+    background-image: url('./../../../assets/landing.jpg');
     background-size: cover;
     background-position: center;
   }
@@ -32,13 +32,14 @@
   
   .form-label-group>input,
   .form-label-group>label {
-    padding: var(--input-padding-y) var(--input-padding-x);
-    height: auto;
-    border-radius: 2rem;
+    //padding: var(--input-padding-y) var(--input-padding-x);
+    height: 35px;
   }
   
   .form-label-group>label {
     position: absolute;
+    padding-left: 10px;
+    padding-top: 5px;
     top: 0;
     left: 0;
     display: block;
@@ -74,16 +75,16 @@
     color: transparent;
   }
   
-  .form-label-group input:not(:placeholder-shown) {
-    padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
-    padding-bottom: calc(var(--input-padding-y) / 3);
-  }
   
   .form-label-group input:not(:placeholder-shown)~label {
     padding-top: calc(var(--input-padding-y) / 3);
     padding-bottom: calc(var(--input-padding-y) / 3);
     font-size: 12px;
     color: #777;
+  }
+
+  .error-message{
+    color: red;
   }
   
   /* Fallback for Edge

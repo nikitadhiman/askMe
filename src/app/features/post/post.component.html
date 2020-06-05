@@ -1,4 +1,4 @@
-<p-toast position="top-left"></p-toast>
+<p-toast position="top-right"></p-toast>
 <div class="card my-4">
     <h5 class="card-header">Ask Your Question</h5>
     <div class="card-body">
@@ -7,13 +7,13 @@
         </div>
         <div class="input-group">
             <ng-multiselect-dropdown [settings]="dropdownSettings" [placeholder]="'Select Tags'" [data]="dropdownList"
-                [(ngModel)]="selectedTags" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"
+                (onDeSelectAll)="onDeSelectAll($event)" (onSelectAll)="onSelectAll($event)">
             </ng-multiselect-dropdown>
 
             <span class="input-group button-action">
                 <button class="btn btn-info float-right" type="button" (click)="addQuestion()">Ask!</button>
             </span>
         </div>
-
     </div>
 </div>

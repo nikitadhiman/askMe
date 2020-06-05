@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-interface answerInterface{
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+
+interface AnswerInterface{
   'id': number;
   'content': string;
   'date': any;
@@ -8,20 +9,34 @@ interface answerInterface{
   'tags'?: Array<any>;
 }
 
+interface Notification{
+  'from': string;
+  'to': any;
+  'message': any;
+}
+
 
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss']
 })
-export class FeedComponent implements OnInit {
+export class FeedComponent implements OnInit, OnChanges {
 
   constructor() { }
   @Input() feed: any;
+  @Output() notification = new EventEmitter();
   answer = '';
-
+  allNotifications = [];
   ngOnInit(): void {
     console.log(this.feed);
+  }
+
+  ngOnChanges(change: SimpleChanges){
+
+    if (change.feed){
+      this.feed = change.feed.currentValue;
+    }
   }
 
   putAnswer(item: any){
@@ -38,15 +53,33 @@ export class FeedComponent implements OnInit {
   }
 
   submitAnswer(item: any){
-    const answer: answerInterface = {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')).userName;
+    const answer: AnswerInterface = {
       id : Math.random(),
-      author : localStorage.getItem('currentUser'),
+      author : currentUser,
       content: this.answer,
       date: new Date(),
       subComment: ''
     };
+
+    const notification: Notification = {
+      to : item.author,
+      from : currentUser,
+      message : currentUser + ' Answered your question \'' +  item.content.substring(0, 25) + '...\''
+    };
+
+    this.setNotification(notification);
+
     item.answers.push(answer);
     item.currentAnswered = false;
     localStorage.setItem('allQuestions', JSON.stringify(this.feed));
+  }
+
+  setNotification(notification: Notification){
+    this.allNotifications = JSON.parse(localStorage.getItem('notifications'));
+    if (!this.allNotifications){ this.allNotifications = []; }
+    this.allNotifications.push(notification);
+    localStorage.setItem('notifications', JSON.stringify(this.allNotifications));
+    this.notification.emit(this.allNotifications);
   }
 }
