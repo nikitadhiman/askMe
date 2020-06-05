@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     const result =  this.validUser(this.userName, this.password);
     if (result) {
       localStorage.setItem('currentUser', JSON.stringify(result));
-      this.route.navigateByUrl('/dashboard');
+      this.route.navigateByUrl('/askMe/dashboard');
 
      }else{
       this.errorMessage = 'Invalid Details, please try with correct details';
